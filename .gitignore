@@ -1,0 +1,47 @@
+# ===================================================================
+# Environment & Secrets - MOST IMPORTANT
+# Never commit your API keys or local environment variables.
+# ===================================================================
+.env
+.env*.local
+.env.*
+
+# ===================================================================
+# Java / Gradle Build Artifacts
+# ===================================================================
+.gradle
+build/
+out/
+target/
+
+# ===================================================================
+# Node / React Build Artifacts (for your chatbot-ui)
+# ===================================================================
+chatbot-ui/node_modules
+chatbot-ui/build
+.pnp
+.pnp.js
+
+# ===================================================================
+# IDE & Editor Directories
+# ===================================================================
+.idea/
+.vscode/
+.project
+.classpath
+.factorypath
+.settings/
+.sts4-cache/
+*.iml
+*.ipr
+*.iws
+
+# ===================================================================
+# Miscellaneous
+# ===================================================================
+# Log files
+*.log
+
+# OS-generated files
+.DS_Store
+Thumbs.db
