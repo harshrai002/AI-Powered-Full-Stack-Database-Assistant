@@ -1,23 +1,25 @@
-version: '3.8'
-
 services:
   dynamodb:
     image: amazon/dynamodb-local:latest
     container_name: dynamodb-local-compose
+    user: "root"
     ports:
       - "8000:8000"
+    # Use a Docker-managed named volume for better performance and management
     volumes:
-      - ./dynamodb_data:/home/dynamodblocal/data
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ."
+      - dynamodb_data:/home/dynamodblocal/data
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
 
   # The Spring Boot Backend Service
   backend:
     build: . # Tells Docker to build from the Dockerfile in the current directory
     ports:
       - "8080:8080"
+    # Explicitly load variables from the .env file for clarity
+    env_file:
+      - .env
     environment:
-      # Pass the Gemini API key as an environment variable
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      # The GEMINI_API_KEY is now loaded from the env_file
       # Tell Spring Boot how to find DynamoDB inside the Docker network
       - AMAZON_DYNAMODB_ENDPOINT=http://dynamodb:8000
     depends_on:
@@ -31,3 +33,7 @@ services:
       - "3000:80" # Map host port 3000 to the container's Nginx port 80
     depends_on:
       - backend # Ensures the backend is running before the frontend starts
+
+# Declare the named volume to be managed by Docker
+volumes:
+  dynamodb_data:
